@@ -1,12 +1,26 @@
 #!/usr/bin/python3
 
 import sys
-from functools import partial
 from copy import deepcopy
-from PyQt5.QtWidgets import (QWidget, QGridLayout,
-                             QPushButton, QApplication,
-                             QHBoxLayout,
-                             QVBoxLayout, QLabel)
+from PyQt5.QtCore import (
+    QSize
+)
+from PyQt5.QtGui import (
+    QFont
+)
+from PyQt5.QtWidgets import (
+    QWidget, QGridLayout, QPushButton, QApplication, QHBoxLayout,
+    QVBoxLayout, QLabel
+)
+
+
+button_style = '''
+                QPushButton {
+                    background-color: white; border-radius: 4px;
+                    border: 1px solid grey; width: 100px; height: 60px;
+                    font-size: 24px;
+                }
+                '''
 
 
 class GameOf8(QWidget):
@@ -32,14 +46,21 @@ class GameOf8(QWidget):
 
     def initUI(self):
         resetLayout = QHBoxLayout()
-
         resetButton = QPushButton("Reset")
+        resetButton.setStyleSheet(button_style)
         resetButton.clicked.connect(self.on_reset)
         resetLayout.addWidget(resetButton)
 
         layout = QVBoxLayout()
 
         counterLabel = QLabel()
+        counterLabel.setStyleSheet(
+            '''
+            QLabel {
+                font-size: 24px;
+            }
+            '''
+        )
 
         self.counterLabel = counterLabel
         self.update_counterLabel()
@@ -59,8 +80,10 @@ class GameOf8(QWidget):
             name = self.default[i][j]
             position = (i, j)
             button = QPushButton(name)
+            button.setStyleSheet(button_style)
             button.clicked.connect(
-                lambda _, pos=position, btn=button: self.on_click(pos, btn))
+                lambda _, pos=position, btn=button: self.on_click(pos, btn)
+            )
             self.buttons.append((position, button))
             self.boardLayout.addWidget(button, *position)
 
